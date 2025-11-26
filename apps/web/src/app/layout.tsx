@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
-import { AppShell } from "../components/AppShell.js";
+import { AppShell } from "@/components/AppShell";
 
 export const metadata: Metadata = {
   title: "SoloKey — 個人音準室",

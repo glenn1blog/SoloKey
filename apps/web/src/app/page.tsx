@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { UploadWidget } from "../components/UploadWidget.js";
-import { demoResult } from "../lib/demoData.js";
+import { UploadWidget } from "@/components/UploadWidget";
+import { demoResult } from "@/lib/demoData";
 
 export default function HomePage() {
   const latest = demoResult;

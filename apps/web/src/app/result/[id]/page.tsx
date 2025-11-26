@@ -1,15 +1,16 @@
 import { notFound } from "next/navigation";
-import { demoActual, demoReference, demoResult } from "../../../lib/demoData.js";
-import { ScorePanel } from "../../../components/ScorePanel.js";
-import { ResultTable } from "../../../components/ResultTable.js";
-import { PitchPlot } from "../../../components/PitchPlot.js";
+import { demoActual, demoReference, demoResult } from "@/lib/demoData";
+import { ScorePanel } from "@/components/ScorePanel";
+import { ResultTable } from "@/components/ResultTable";
+import { PitchPlot } from "@/components/PitchPlot";
 
 interface ResultPageProps {
-  params: { id: string };
+  params?: { id?: string };
 }
 
 export default function ResultPage({ params }: ResultPageProps) {
-  if (!params.id) {
+  const resultId = params?.id ?? "demo";
+  if (!resultId) {
     notFound();
   }
 

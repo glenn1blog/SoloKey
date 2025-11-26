@@ -2,8 +2,8 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "jsx": "preserve",
     "resolveJsonModule": true,
     "types": ["node", "react"],

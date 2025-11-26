@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import type { ChangeEvent } from "react";
-import { Button } from "./Button.js";
-import { fetchReferenceSample, uploadAudio } from "../services/api.js";
-import { useSoloKeyStore } from "../hooks/useSoloKeyStore.js";
-import { demoActual, demoReference } from "../lib/demoData.js";
+import { Button } from "./Button";
+import { fetchReferenceSample, uploadAudio } from "@/services/api";
+import { useSoloKeyStore } from "@/hooks/useSoloKeyStore";
+import { demoActual, demoReference } from "@/lib/demoData";
 
 export function UploadWidget() {
   const [status, setStatus] = useState<"idle" | "uploading" | "error" | "done">("idle");

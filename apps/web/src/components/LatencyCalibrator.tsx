@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "./Button.js";
-import { useSoloKeyStore } from "../hooks/useSoloKeyStore.js";
+import { Button } from "./Button";
+import { useSoloKeyStore } from "@/hooks/useSoloKeyStore";
 
 export function LatencyCalibrator() {
   const offsetMs = useSoloKeyStore((state) => state.offsetMs);

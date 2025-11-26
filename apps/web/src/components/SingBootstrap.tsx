@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import type { TPitchFrame } from "@solokey/shared";
-import { useSoloKeyStore } from "../hooks/useSoloKeyStore.js";
+import { useSoloKeyStore } from "@/hooks/useSoloKeyStore";
 
 interface SingBootstrapProps {
   reference: readonly TPitchFrame[];

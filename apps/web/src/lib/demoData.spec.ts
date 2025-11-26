@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { demoActual, demoReference, demoResult } from "./demoData.js";
+import { demoActual, demoReference, demoResult } from "@/lib/demoData";
 
 describe("demo data", () => {
   it("provides reference and actual frames", () => {

@@ -1,8 +1,8 @@
-import { demoActual, demoReference } from "../../lib/demoData.js";
-import { PitchPlot } from "../../components/PitchPlot.js";
-import { LatencyCalibrator } from "../../components/LatencyCalibrator.js";
-import { Button } from "../../components/Button.js";
-import { SingBootstrap } from "../../components/SingBootstrap.js";
+import { demoActual, demoReference } from "@/lib/demoData";
+import { PitchPlot } from "@/components/PitchPlot";
+import { LatencyCalibrator } from "@/components/LatencyCalibrator";
+import { Button } from "@/components/Button";
+import { SingBootstrap } from "@/components/SingBootstrap";
 
 export default function SingPage() {
   return (
