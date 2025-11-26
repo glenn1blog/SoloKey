@@ -2,11 +2,11 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 const navItems = [
-  { href: "/", label: "Dashboard" },
-  { href: "/library", label: "Library" },
-  { href: "/sing", label: "Studio" },
-  { href: "/result/demo", label: "Results" },
-  { href: "/settings", label: "Settings" }
+  { href: "/", label: "儀表板" },
+  { href: "/library", label: "歌曲庫" },
+  { href: "/sing", label: "練唱室" },
+  { href: "/result/demo", label: "練習結果" },
+  { href: "/settings", label: "設定" }
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
