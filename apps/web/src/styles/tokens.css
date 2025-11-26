@@ -1,0 +1,18 @@
+:root {
+  --sk-color-primary: #7c4dff;
+  --sk-color-primary-soft: #ede7ff;
+  --sk-color-accent: #ffca28;
+
+  --sk-color-bg: #0f172a;
+  --sk-color-surface: #111827;
+  --sk-color-surface-soft: #1f2937;
+  --sk-color-border: #374151;
+  --sk-color-text-main: #f9fafb;
+  --sk-color-text-muted: #9ca3af;
+  --sk-color-text-invert: #020617;
+
+  --sk-color-success: #22c55e;
+  --sk-color-warning: #eab308;
+  --sk-color-danger: #ef4444;
+  --sk-color-info: #38bdf8;
+}

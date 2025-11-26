@@ -1,0 +1,18 @@
+# Node / pnpm
+node_modules/
+pnpm-lock.yaml
+
+# Build / output
+.next/
+dist/
+build/
+coverage/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Misc
+.DS_Store
+*.log

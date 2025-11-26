@@ -1,0 +1,21 @@
+{
+    "name": "@solokey/shared",
+    "version": "0.0.1",
+    "private": true,
+    "type": "module",
+    "main": "src/index.ts",
+    "types": "src/index.ts",
+    "scripts": {
+        "build": "tsc --project tsconfig.json --outDir dist",
+        "lint": "eslint src --ext .ts",
+        "test": "vitest run",
+        "typecheck": "tsc --project tsconfig.json --noEmit"
+    },
+    "dependencies": {
+        "@sinclair/typebox": "^0.32.33"
+    },
+    "devDependencies": {
+        "typescript": "^5.4.5",
+        "vitest": "^1.5.0"
+    }
+}

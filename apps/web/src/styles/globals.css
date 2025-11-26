@@ -1,0 +1,29 @@
+@import "./tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--sk-color-bg);
+  color: var(--sk-color-text-main);
+  font-family: "Inter", "Noto Sans TC", system-ui, sans-serif;
+}
+
+.sk-card {
+  background-color: var(--sk-color-surface);
+  border: 1px solid var(--sk-color-border);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.sk-heading-1 {
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.sk-text-muted {
+  color: var(--sk-color-text-muted);
+}

@@ -1,0 +1,16 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "types": ["node", "react"],
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "src/**/*", "next.config.mjs", "tailwind.config.ts", "vitest.config.ts"],
+  "exclude": ["node_modules"]
+}

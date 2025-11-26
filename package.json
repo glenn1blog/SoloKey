@@ -1,0 +1,25 @@
+{
+    "name": "solokey",
+    "private": true,
+    "packageManager": "pnpm@10.23.0",
+    "scripts": {
+        "build": "pnpm run -r build",
+        "dev": "pnpm run -r --parallel dev",
+        "dev:web": "pnpm --filter @solokey/web dev",
+        "dev:server": "pnpm --filter @solokey/server dev",
+        "lint": "pnpm run -r lint",
+        "test": "pnpm run -r test",
+        "typecheck": "pnpm run -r typecheck"
+    },
+    "engines": {
+        "node": ">=18.18.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.12.7",
+        "@typescript-eslint/eslint-plugin": "^7.8.0",
+        "@typescript-eslint/parser": "^7.8.0",
+        "eslint": "^8.57.0",
+        "typescript": "^5.4.5",
+        "vitest": "^1.5.0"
+    }
+}

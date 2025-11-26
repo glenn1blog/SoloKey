@@ -1,7 +1,11 @@
 # SoloKey — 個人音準室
 > **SoloKey：你的個人音準室——上傳 MP3、對照目標與自身音準曲線、即時練唱並自動評分。**
 
-本專案以 **Next.js 14（App Router）+ React 19 + TypeScript 5 + Tailwind CSS** 開發前端，後端採 **Node.js + Fastify**，並以 **pnpm monorepo** 管理。目標是提供「上傳 MP3 → 顯示目標音準曲線 → 麥克風即時比對 → 自動評分 → 回放/檢視錯誤段落」的完整練唱體驗。
+本專案以 **Next.js 14（App Router）+ React 19 + TypeScript 5 + Tailwind CSS** 開發前端，後端採 **Node.js + Fastify**，並以 **pnpm monorepo** 管理。目標是提供「上傳 MP3 → 顯示目標音準曲線 → 麥克風即時比對 → 自動評分 → 回放/檢視錯誤段落」的完整練唱體驗。詳細規格、流程與 UI 風格請參考 `docs/` 目錄：
+
+- `docs/process/agents_codex.md`
+- `docs/specs/solo_key_規格與實作指南（給_codex）.md`
+- `docs/ui/solo_key_ui_style_guide.md`
 
 ---
 
