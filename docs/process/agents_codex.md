@@ -2,7 +2,7 @@
 
 > 目的：讓 **Codex CLI / VS Code 外掛** 在 SoloKey 專案遵循一致、可審核、最小變更（Minimal Diff）的開發流程；強制 **TypeScript 嚴格型別（禁止 `any`）**、**ESLint 規範**、**6A Gate** 與 **原子變更（Atoms）**。
 >
-> **專案簡述：** SoloKey — 個人音準室。**Next.js 14（App Router）+ React 19 + TypeScript 5 + Tailwind CSS** 為前端；**Node.js + Fastify（建議）** 為後端；採 **pnpm monorepo**（`apps/web`、`apps/server`、`packages/shared`）。核心功能：上傳 MP3、產生目標音準曲線、麥克風即時比對、延遲校正、自動評分與結果回放。
+> **專案簡述：** SoloKey — 個人音準室。**Next.js 16（App Router）+ React 19 + TypeScript 5 + Tailwind CSS 4** 為前端；**Node.js 20 LTS + Fastify（建議）** 為後端；採 **pnpm monorepo**（`apps/web`、`apps/server`、`packages/shared`）。核心功能：上傳 MP3、產生目標音準曲線、麥克風即時比對、延遲校正、自動評分與結果回放。
 >
 > 前端 UI / UX 風格請搭配 `solo_key_ui_style_guide.md` 參考，確保畫面一致。
 
@@ -161,7 +161,7 @@
 
 ### 7.1 項目概述
 
-- 前端：**Next.js 14 + React 19 + TypeScript 5 + Tailwind CSS**（App Router）。
+- 前端：**Next.js 16 + React 19 + TypeScript 5 + Tailwind CSS 4**（App Router）。
 - 後端：**Node.js + Fastify**（建議；Express 亦可，但新碼優先 Fastify）。
 - 專案結構：`apps/web`、`apps/server`、`packages/shared`（共用型別/常數/工具）。
 

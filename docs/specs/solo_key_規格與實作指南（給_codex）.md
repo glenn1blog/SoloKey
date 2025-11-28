@@ -8,7 +8,7 @@
 - **Goal**：完成上傳 MP3、生成/載入目標音準曲線、麥克風即時比對、延遲校正、自動評分與結果回放的 MVP。
 - **Non-goals**：社群功能、雲端使用者系統、大量歌曲版權資料接入。
 - **Scope & Impact**：
-  - 前端：Next.js 14（App Router）/ React 19 / TS 5 / Tailwind。
+  - 前端：Next.js 16（App Router）/ React 19 / TS 5 / Tailwind CSS 4。
   - 後端：Node.js + **Fastify**（建議）。
   - 共用型別：`packages/shared`。
 - **Approach（MVP）**：
@@ -186,7 +186,7 @@ export const useSoloKeyStore = create<SoloKeyState>((set) => ({
 ## 4) 技術堆疊與套件決策（MVP 建議）
 - **音訊/分析**：前後端皆用 `pitchfinder`（YIN/MPM）；需要特徵時再加 `meyda`。
 - **狀態**：`zustand`；
-- **UI**：Tailwind + Radix Primitives（或 shadcn/ui）。
+- **UI**：Tailwind CSS 4 + Radix Primitives（或 shadcn/ui）。
 - **後端**：`fastify`、`@fastify/cors`、`@fastify/websocket`、`@fastify/multipart`、`@fastify/type-provider-typebox`、`@sinclair/typebox`。
 - **上傳/解碼（後端）**：`ffmpeg-static`（離線解碼 MP3 至 PCM 再跑偵測）。
 
@@ -213,7 +213,7 @@ export const useSoloKeyStore = create<SoloKeyState>((set) => ({
 }
 ```
 - `apps/web/src/app/globals.css` 開頭匯入：`@import "../styles/tokens.css";`
-- Tailwind `theme.extend.colors/spacing/fontFamily` 以 CSS 變數對應品牌主題。
+- Tailwind CSS 4 `theme.extend.colors/spacing/fontFamily` 以 CSS 變數對應品牌主題。
 - 提供 SVG Logo（正片/反白），favicon 與字體授權（建議思源黑體）。
 
 ---
@@ -242,7 +242,7 @@ describe("scoreGrid", () => {
 - **GitLab CI 階段**：install → lint → typecheck → test → build（web/server）→ docker build/push → deploy。
 - **Docker**：
   - server：Node LTS 多階段，`PORT=4000`；限制檔案大小。
-  - web：Next.js `output: "standalone"`，Nginx 或 Node 服務；環境變數以 `ARG/ENV` 注入。
+  - web：Next.js 16 `output: "standalone"`，Nginx 或 Node 服務；環境變數以 `ARG/ENV` 注入。
 - **反向代理**：同源部署（`/api/*` → 4000）以免 CORS。
 
 ---
@@ -254,7 +254,7 @@ uvx --from git+https://github.com/github/spec-kit.git specify init --here --ai c
 ```
 - 快速開跑：
 ```
-/speckit.plan 本專案採 Next.js 14 + React 19 + TS 5 + Tailwind；後端 Fastify。先完成：/api/analyze/pitch、/api/score、/realtime；前端 /sing 延遲校正、/result/[id] 分段回放。嚴禁 any、ESLint 0 錯誤。
+/speckit.plan 本專案採 Next.js 16 + React 19 + TS 5 + Tailwind CSS 4；後端 Fastify。先完成：/api/analyze/pitch、/api/score、/realtime；前端 /sing 延遲校正、/result/[id] 分段回放。嚴禁 any、ESLint 0 錯誤。
 /speckit.tasks
 /speckit.implement
 ```
@@ -288,4 +288,3 @@ Constraints: 型別以 ScoreRes；client component；零 any；ESLint 0。
 - `A4` 參考 440Hz（可調）。
 
 > **注意**：所有程式碼禁止 `any`，違規時請直接修正型別或以 `unknown` + 型別守衛處理；禁止以 ESLint 註解略過規則。
-

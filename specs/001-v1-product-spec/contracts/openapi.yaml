@@ -1,0 +1,327 @@
+openapi: 3.0.3
+info:
+  title: SoloKey v1 Contracts
+  version: 0.1.0
+  description: >
+    功能規格 001-v1-product-spec 對應的 API 契約。僅描述資料結構與行為，不含實作細節。
+servers:
+  - url: https://api.example.com
+    description: 佔位用（實際部署時更新）
+tags:
+  - name: Sessions
+  - name: Assignments
+  - name: History
+paths:
+  /api/sessions/upload:
+    post:
+      tags: [Sessions]
+      summary: 上傳參考音檔並建立新的練唱 Session
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                referenceFile:
+                  type: string
+                  format: binary
+                songTitle:
+                  type: string
+                artistName:
+                  type: string
+                notes:
+                  type: string
+                assignmentCode:
+                  type: string
+                  nullable: true
+              required:
+                - referenceFile
+                - songTitle
+      responses:
+        "201":
+          description: Session 已建立
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PracticeSession"
+        "400":
+          description: 無效檔案或欄位
+  /api/sessions/{sessionId}:
+    get:
+      tags: [Sessions]
+      summary: 取得練唱 Session 詳細資訊（含狀態）
+      parameters:
+        - in: path
+          name: sessionId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Session 資訊
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PracticeSession"
+        "404":
+          description: 找不到 Session
+  /api/sessions/{sessionId}/score:
+    get:
+      tags: [Sessions]
+      summary: 取得 ScoreReport 與曲線資料
+      parameters:
+        - in: path
+          name: sessionId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Score 與曲線
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  session:
+                    $ref: "#/components/schemas/PracticeSession"
+                  score:
+                    $ref: "#/components/schemas/ScoreReport"
+                  contours:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PitchContour"
+        "404":
+          description: 尚未完成或不存在
+  /api/assignments:
+    post:
+      tags: [Assignments]
+      summary: 老師建立指派
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssignmentInput"
+      responses:
+        "201":
+          description: 建立成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Assignment"
+  /api/assignments/{code}/sessions:
+    get:
+      tags: [Assignments]
+      summary: 老師查詢指定代碼底下的練唱結果
+      parameters:
+        - in: path
+          name: code
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 練唱列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PracticeHistoryEntry"
+        "404":
+          description: 代碼不存在或已失效
+  /api/history:
+    get:
+      tags: [History]
+      summary: 取得最近練唱歷史
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+            maximum: 50
+        - in: query
+          name: from
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: to
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: keyword
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 歷史列表
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PracticeHistoryEntry"
+  /api/history/{sessionId}/playback:
+    get:
+      tags: [History]
+      summary: 取得單筆練習的回放媒體資訊
+      parameters:
+        - in: path
+          name: sessionId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: 回放資訊
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  audioUrl:
+                    type: string
+                  referenceContour:
+                    $ref: "#/components/schemas/PitchContour"
+                  actualContour:
+                    $ref: "#/components/schemas/PitchContour"
+                  notes:
+                    type: string
+        "404":
+          description: 找不到該 Session
+
+components:
+  schemas:
+    PracticeSession:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        role:
+          type: string
+          enum: [solo, student, teacher]
+        assignmentCode:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [uploaded, analyzing, scored, failed]
+        referenceTrack:
+          type: object
+          properties:
+            title:
+              type: string
+            artist:
+              type: string
+            durationSec:
+              type: number
+            fileSizeMb:
+              type: number
+        notes:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    PitchContour:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [reference, actual]
+        sampleRate:
+          type: number
+        frames:
+          type: array
+          items:
+            type: object
+            properties:
+              t:
+                type: number
+              f0:
+                type: number
+    ScoreReport:
+      type: object
+      properties:
+        totalScore:
+          type: number
+          minimum: 0
+          maximum: 100
+        segments:
+          type: array
+          items:
+            type: object
+            properties:
+              startSec:
+                type: number
+              endSec:
+                type: number
+              score:
+                type: number
+              note:
+                type: string
+        detectedIssues:
+          type: array
+          items:
+            type: string
+        recommendations:
+          type: array
+          items:
+            type: string
+    AssignmentInput:
+      type: object
+      properties:
+        teacherName:
+          type: string
+        songTitle:
+          type: string
+        songArtist:
+          type: string
+        targetSection:
+          type: string
+        expiresAt:
+          type: string
+          format: date-time
+      required:
+        - teacherName
+        - songTitle
+    Assignment:
+      allOf:
+        - $ref: "#/components/schemas/AssignmentInput"
+        - type: object
+          properties:
+            assignmentId:
+              type: string
+            code:
+              type: string
+            status:
+              type: string
+              enum: [active, archived]
+            createdAt:
+              type: string
+              format: date-time
+    PracticeHistoryEntry:
+      type: object
+      properties:
+        sessionId:
+          type: string
+        title:
+          type: string
+        totalScore:
+          type: number
+        assignmentCode:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        notesSummary:
+          type: string

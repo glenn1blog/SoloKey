@@ -1,0 +1,5 @@
+[projects."/mnt/c/Glenn/project/SoloKey"]
+trust_level = "trusted"
+
+[notice]
+"hide_gpt-5.1-codex-max_migration_prompt" = true

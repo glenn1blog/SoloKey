@@ -1,0 +1,37 @@
+# SoloKey MVP 技術方案（/speckit.plan）
+
+## 1) 目標與範圍
+- 目標：提供「選歌/上傳 → 準備/校正 → 練唱 → 結算」的單人練唱閉環，支援 MP3/WAV、即時雙曲線與基礎評分。
+- 範圍：桌機 Chrome/Edge；單人練唱、單一房間；儲存以本機檔/JSON 為主（MVP 不引入 DB）。
+- 非範圍：多人同步、雲端帳號系統、串流授權、完整 DAW 功能。
+
+## 2) 架構與分工
+- Monorepo：`packages/shared` 放型別與演算法；`apps/server` Fastify API；`apps/web` Next.js App Router。
+- 型別：以 `@sinclair/typebox` 定義 DTO（`TPitchFrame`、`TScoreReq/Res` 等），禁止 any；未來 `Song/ScoreResult` 型別也放 shared。
+- 演算法：共用 `estimateOffsetMs`、`resampleToGrid`、`scoreGrid`；pitch 偵測以 `pitchfinder`（YIN/MPM）為主，可放 Worker/Worklet 降低卡頓。
+
+## 3) 後端方案（apps/server）
+- Fastify + TypeBoxTypeProvider；路由：`/health`、`/api/upload`（multipart，20–50MB）、`/api/analyze/pitch`、`/api/score`、`/realtime`(WS)。
+- 上傳：暫存檔案並回傳 `fileId/duration/sampleRate/metadata`；內建 demo 採固定 ID。MVP 不接 DB，未來可替換 SQLite/Postgres。
+- Pitch/Score：可接受前端送出的 frames/contour；`/api/score` 套用延遲估測（±500ms 互相關）、20ms 網格線性內插、50 cents 容忍度、2 秒分段註解。
+- 即時分析優先在前端/Worker，後端保持輕量；WS 預留 `realtime` ping/pong。
+
+## 4) 前端方案（apps/web）
+- Next.js 16 + React 19（App Router）；Tailwind 為主，globals 匯入 tokens.css。狀態用 `zustand`（`SoloKeyState`：fileId/reference/actual/offsetMs/phase 等）。
+- 路由：`/`（介紹＋UploadWidget＋最新結果）、`/sing`（準備→錄音→雙曲線＋LatencyCalibrator）、`/result/[id]`（ScorePanel + 分段回放）。暫不開 `/songs` 清單頁，以 demo/mock 為主。
+- 音訊管線：Web Audio/MediaRecorder 抓麥克風 → Worker/AudioWorklet 跑 pitchfinder → 即時 contour 視覺化；結束後送 `/api/score` 取得 total/segments。
+- 元件：`UploadWidget`、`PitchPlot`（雙曲線）、`MicInput`、`LatencyCalibrator`、`ScorePanel`、`ResultTable`；文案偏鼓勵且中文。
+
+## 5) 測試與品質
+- 指令：`pnpm lint && pnpm typecheck && pnpm test` 必須通過；ESLint 嚴格、零 any。
+- 單元測試：`scoreGrid/estimateOffsetMs` 邊界、`framesToContour`、關鍵 hooks（錄音/音高）。
+- Fixture：`apps/web/public/samples/demo.mp3`、`demo.reference.json`，提供 demo result 供 UI。
+
+## 6) 風險與緩解
+- 延遲差異：自動 offset + 手動滑桿微調；UI 顯示 offset 值。
+- 效能：畫布抽樣/節流；pitch 計算放 Worker；限制檔案長度/大小。
+- 權限：準備頁提示麥克風授權，失敗時給重試/設定說明。
+- 相容性：鎖桌機 Chrome/Edge；AudioWorklet feature detection fallback。
+
+## 7) 後續任務方向（詳見 /speckit.tasks）
+- 完善 server 路由與 schema；前端 `/sing` 流程 + latency 校正；demo 資料與測試補齊。

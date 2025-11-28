@@ -1,0 +1,34 @@
+# SoloKey MVP Tasks（/speckit.tasks）
+
+> 依 /speckit.plan：桌機 Chrome/Edge、無 DB、/→/sing→/result 流程，嚴格 TS、零 any、pnpm lint/typecheck/test 必須通過。
+
+## Phase 0 — 基礎確認
+1. 確認 TS `strict`、ESLint 設定與 `@sinclair/typebox` schema 已在 shared 共用；補齊缺少的 `Song/ScoreResult` 型別骨架。
+2. 建立 demo 資料夾與樣本：`apps/web/public/samples/demo.mp3`、`demo.reference.json`、demo result JSON。
+
+## Phase 1 — 後端 API 完成度（Fastify）
+3. `/api/upload`：落地暫存檔、限制大小 20–50MB，回傳 `fileId/duration/sampleRate/metadata`。
+4. `/api/analyze/pitch`：接收 frames + sampleRate，使用 pitchfinder 產生 contour（20ms hop），加入單元測試。
+5. `/api/score`：套用延遲估測（±500ms）、20ms 網格、50 cents 容忍度、2 秒分段；補充 edge case 測試。
+6. `/realtime` WebSocket：維持 ping/pong 骨架，後續可擴增事件格式。
+
+## Phase 2 — 前端頁面與狀態
+7. `/` 首頁：CTA + UploadWidget（選 demo 或上傳）；顯示最新 demo result。
+8. `/sing`：三階段狀態（ready/recording/finished）＋布局；引用 `SoloKeyState`（fileId/reference/actual/offsetMs/phase）。
+9. `/result/[id]`：ScorePanel、分段列表、點擊段落可觸發回到 `/sing` 指定時間（先 mock）。
+
+## Phase 3 — 音訊/偵測/校正
+10. `useMicrophone`：處理權限、錯誤提示、提供 AudioContext/stream。
+11. `usePitchDetection`（Worker/AudioWorklet 可選）：將麥克風音訊轉為 pitch frames（20ms）；暴露 contour 與狀態。
+12. `LatencyCalibrator`：自動估測 offset + 手動滑桿微調，與 `SoloKeyState` 整合。
+13. `PitchPlot`：雙曲線繪圖（reference/actual）、時間軸進度、顏色表示偏差。
+
+## Phase 4 — 結算與體驗
+14. 練習結束觸發 `/api/score`，顯示 total/segments/簡短評論；文案鼓勵導向。
+15. Loading/Error/Fallback：麥克風被拒、檔案上傳失敗、效能不足時提供清楚提示與重試。
+16. Tailwind token 化：globals 匯入 tokens.css，確保 1080p 下的間距/對比。
+
+## Phase 5 — 測試與文件
+17. 單元測試：`estimateOffsetMs`、`resampleToGrid`、`scoreGrid`、`framesToContour`、核心 hooks（mock Audio）。  
+18. README/技術說明（中文）：啟動方式、音高/評分邏輯摘要、已知限制。  
+19. 驗證：`pnpm lint && pnpm typecheck && pnpm test`，截圖/說明 demo 流程。
