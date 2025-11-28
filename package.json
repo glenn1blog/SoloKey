@@ -9,7 +9,8 @@
         "dev:server": "pnpm --filter @solokey/server dev",
         "lint": "pnpm run -r lint",
         "test": "pnpm run -r test",
-        "typecheck": "pnpm run -r typecheck"
+        "typecheck": "pnpm run -r typecheck",
+        "verify": "pnpm lint && pnpm typecheck && pnpm test"
     },
     "engines": {
         "node": ">=18.18.0"
